@@ -1,0 +1,2164 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Proyecto: Clasificación con Naive Bayes &#8212; Clasificador Bayesiano</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Modelobayesiano';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Clasificador Bayesiano - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Clasificador Bayesiano - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FModelobayesiano.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Modelobayesiano.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Proyecto: Clasificación con Naive Bayes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Proyecto: Clasificación con Naive Bayes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-librerias">1. Importación de librerías</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-del-minipriyecto-y-analisis-exploratorio">2. Contexto del Minipriyecto y Análisis Exploratorio</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">2.1 Diccionario de variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables Numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tratamiento-de-datos-faltantes">2.2 Tratamiento de datos faltantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputacion-de-datos-faltantes">Imputación de datos faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-valores-en-variable-objetivo">Cambio de valores en variable objetivo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda">2.3 EDA</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelacion">3. MODELACIÓN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-correlacion">Matriz de Correlación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de Preprocesamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-del-entrenamiento-del-el-modelo">Pipeline del entrenamiento del el Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-del-modelo-en-el-conjunto-de-prueba">Evaluación del Modelo en el Conjunto de Prueba</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-gaussiannb">Conclusiones GaussianNB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-otros-modelos">Comparación con otros modelos</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reflexion-y-conclusiones-finales">4. Reflexión y Conclusiones Finales</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="proyecto-clasificacion-con-naive-bayes">
+<h1>Proyecto: Clasificación con Naive Bayes<a class="headerlink" href="#proyecto-clasificacion-con-naive-bayes" title="Link to this heading">#</a></h1>
+<p>Este notebook implementa un clasificador <strong>Naive Bayes</strong> para predecir enfermedades del corazón, comparando su desempeño con otros modelos.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="importacion-de-librerias">
+<h1>1. Importación de librerías<a class="headerlink" href="#importacion-de-librerias" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ucimlrepo</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ucimlrepo in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (0.0.7)
+Requirement already satisfied: pandas&gt;=1.0.0 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from ucimlrepo) (2.3.2)
+Requirement already satisfied: certifi&gt;=2020.12.5 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from ucimlrepo) (2025.8.3)
+Requirement already satisfied: numpy&gt;=1.23.2 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (1.24.3)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (2025.2)
+Requirement already satisfied: six&gt;=1.5 in c:\users\omar daniel medina v\anaconda3\envs\ml_venv\lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.0.0-&gt;ucimlrepo) (1.17.0)
+Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ucimlrepo</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_ucirepo</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianNB</span><span class="p">,</span> <span class="n">BernoulliNB</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">accuracy_score</span><span class="p">,</span>
+    <span class="n">classification_report</span><span class="p">,</span>
+    <span class="n">confusion_matrix</span><span class="p">,</span>
+    <span class="n">roc_auc_score</span><span class="p">,</span>
+    <span class="n">roc_curve</span><span class="p">,</span>
+    <span class="n">auc</span>
+<span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="contexto-del-minipriyecto-y-analisis-exploratorio">
+<h1>2. Contexto del Minipriyecto y Análisis Exploratorio<a class="headerlink" href="#contexto-del-minipriyecto-y-analisis-exploratorio" title="Link to this heading">#</a></h1>
+<p>Las enfermedades cardiovasculares son la principal causa de muerte en todo el mundo, según la OMS. Detectarlas a tiempo es fundamental para evitar complicaciones graves. Con la digitalización de los historiales médicos y la disponibilidad de datos clínicos estructurados, ahora es posible utilizar técnicas de aprendizaje automático para predecir el riesgo de falla cardíaca.
+El dataset “Heart Failure Prediction” contiene registros clínicos de pacientes, con variables como presión sanguínea, colesterol, glucosa, edad, entre otras. El objetivo es construir un modelo de clasificación binaria que prediga si un paciente está en riesgo de sufrir una falla cardíaca o no (HeartDisease = 1 o 0).</p>
+<p>Con el objetivo de mejorar la comprensión y manipulación de los datos, se decidió realizar un renombramiento de las variables. Esta medida busca estandarizar la nomenclatura, facilitar la interpretación de los datos y optimizar su tratamiento en las etapas posteriores del análisis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heart_disease</span> <span class="o">=</span> <span class="n">fetch_ucirepo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span> 
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">heart_disease</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span> 
+<span class="n">y</span> <span class="o">=</span> <span class="n">heart_disease</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">targets</span> 
+  
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)],</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">join</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span>     <span class="c1"># asegura intersección de índices</span>
+<span class="p">)</span>
+
+<span class="c1"># Renombrar columnas a español</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;edad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;sexo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp&quot;</span><span class="p">:</span> <span class="s2">&quot;dolor_pecho&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trestbps&quot;</span><span class="p">:</span> <span class="s2">&quot;presion_reposo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chol&quot;</span><span class="p">:</span> <span class="s2">&quot;colesterol&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fbs&quot;</span><span class="p">:</span> <span class="s2">&quot;azucar_ayunas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;restecg&quot;</span><span class="p">:</span> <span class="s2">&quot;ecg_reposo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;thalach&quot;</span><span class="p">:</span> <span class="s2">&quot;freq_cardiaca_max&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;exang&quot;</span><span class="p">:</span> <span class="s2">&quot;angina_ejercicio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;oldpeak&quot;</span><span class="p">:</span> <span class="s2">&quot;depresion_st&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slope&quot;</span><span class="p">:</span> <span class="s2">&quot;pendiente_st&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ca&quot;</span><span class="p">:</span> <span class="s2">&quot;vasos_coloreados&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;thal&quot;</span><span class="p">:</span> <span class="s2">&quot;talio&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="s2">&quot;enfermedad_cardiaca&quot;</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All data shape: &#39;</span><span class="p">,</span> <span class="n">all_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">all_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>All data shape:  (303, 14)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>edad</th>
+      <th>sexo</th>
+      <th>dolor_pecho</th>
+      <th>presion_reposo</th>
+      <th>colesterol</th>
+      <th>azucar_ayunas</th>
+      <th>ecg_reposo</th>
+      <th>freq_cardiaca_max</th>
+      <th>angina_ejercicio</th>
+      <th>depresion_st</th>
+      <th>pendiente_st</th>
+      <th>vasos_coloreados</th>
+      <th>talio</th>
+      <th>enfermedad_cardiaca</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>1</td>
+      <td>1</td>
+      <td>145</td>
+      <td>233</td>
+      <td>1</td>
+      <td>2</td>
+      <td>150</td>
+      <td>0</td>
+      <td>2.3</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>67</td>
+      <td>1</td>
+      <td>4</td>
+      <td>160</td>
+      <td>286</td>
+      <td>0</td>
+      <td>2</td>
+      <td>108</td>
+      <td>1</td>
+      <td>1.5</td>
+      <td>2</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>67</td>
+      <td>1</td>
+      <td>4</td>
+      <td>120</td>
+      <td>229</td>
+      <td>0</td>
+      <td>2</td>
+      <td>129</td>
+      <td>1</td>
+      <td>2.6</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>37</td>
+      <td>1</td>
+      <td>3</td>
+      <td>130</td>
+      <td>250</td>
+      <td>0</td>
+      <td>0</td>
+      <td>187</td>
+      <td>0</td>
+      <td>3.5</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>41</td>
+      <td>0</td>
+      <td>2</td>
+      <td>130</td>
+      <td>204</td>
+      <td>0</td>
+      <td>2</td>
+      <td>172</td>
+      <td>0</td>
+      <td>1.4</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 303 entries, 0 to 302
+Data columns (total 14 columns):
+ #   Column               Non-Null Count  Dtype  
+---  ------               --------------  -----  
+ 0   edad                 303 non-null    int64  
+ 1   sexo                 303 non-null    int64  
+ 2   dolor_pecho          303 non-null    int64  
+ 3   presion_reposo       303 non-null    int64  
+ 4   colesterol           303 non-null    int64  
+ 5   azucar_ayunas        303 non-null    int64  
+ 6   ecg_reposo           303 non-null    int64  
+ 7   freq_cardiaca_max    303 non-null    int64  
+ 8   angina_ejercicio     303 non-null    int64  
+ 9   depresion_st         303 non-null    float64
+ 10  pendiente_st         303 non-null    int64  
+ 11  vasos_coloreados     299 non-null    float64
+ 12  talio                301 non-null    float64
+ 13  enfermedad_cardiaca  303 non-null    int64  
+dtypes: float64(3), int64(11)
+memory usage: 33.3 KB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>edad</th>
+      <th>sexo</th>
+      <th>dolor_pecho</th>
+      <th>presion_reposo</th>
+      <th>colesterol</th>
+      <th>azucar_ayunas</th>
+      <th>ecg_reposo</th>
+      <th>freq_cardiaca_max</th>
+      <th>angina_ejercicio</th>
+      <th>depresion_st</th>
+      <th>pendiente_st</th>
+      <th>vasos_coloreados</th>
+      <th>talio</th>
+      <th>enfermedad_cardiaca</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>303.000000</td>
+      <td>299.000000</td>
+      <td>301.000000</td>
+      <td>303.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>54.438944</td>
+      <td>0.679868</td>
+      <td>3.158416</td>
+      <td>131.689769</td>
+      <td>246.693069</td>
+      <td>0.148515</td>
+      <td>0.990099</td>
+      <td>149.607261</td>
+      <td>0.326733</td>
+      <td>1.039604</td>
+      <td>1.600660</td>
+      <td>0.672241</td>
+      <td>4.734219</td>
+      <td>0.937294</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>9.038662</td>
+      <td>0.467299</td>
+      <td>0.960126</td>
+      <td>17.599748</td>
+      <td>51.776918</td>
+      <td>0.356198</td>
+      <td>0.994971</td>
+      <td>22.875003</td>
+      <td>0.469794</td>
+      <td>1.161075</td>
+      <td>0.616226</td>
+      <td>0.937438</td>
+      <td>1.939706</td>
+      <td>1.228536</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>29.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>94.000000</td>
+      <td>126.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>71.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>48.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>120.000000</td>
+      <td>211.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>133.500000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>56.000000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>130.000000</td>
+      <td>241.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>153.000000</td>
+      <td>0.000000</td>
+      <td>0.800000</td>
+      <td>2.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>61.000000</td>
+      <td>1.000000</td>
+      <td>4.000000</td>
+      <td>140.000000</td>
+      <td>275.000000</td>
+      <td>0.000000</td>
+      <td>2.000000</td>
+      <td>166.000000</td>
+      <td>1.000000</td>
+      <td>1.600000</td>
+      <td>2.000000</td>
+      <td>1.000000</td>
+      <td>7.000000</td>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>77.000000</td>
+      <td>1.000000</td>
+      <td>4.000000</td>
+      <td>200.000000</td>
+      <td>564.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>202.000000</td>
+      <td>1.000000</td>
+      <td>6.200000</td>
+      <td>3.000000</td>
+      <td>3.000000</td>
+      <td>7.000000</td>
+      <td>4.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="diccionario-de-variables">
+<h2>2.1 Diccionario de variables<a class="headerlink" href="#diccionario-de-variables" title="Link to this heading">#</a></h2>
+</section>
+<section id="variables-numericas">
+<h2>Variables Numéricas<a class="headerlink" href="#variables-numericas" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Descripción</p></th>
+<th class="head"><p>Unidades / Rango</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>edad</strong></p></td>
+<td><p>Edad del paciente</p></td>
+<td><p>años</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>presion_reposo</strong></p></td>
+<td><p>Presión arterial en reposo</p></td>
+<td><p>mm Hg</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>colesterol</strong></p></td>
+<td><p>Colesterol sérico</p></td>
+<td><p>mg/dl</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>freq_cardiaca_max</strong></p></td>
+<td><p>Frecuencia cardíaca máxima alcanzada</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>depresion_st</strong></p></td>
+<td><p>Depresión del segmento ST inducida por ejercicio (vs reposo)</p></td>
+<td><p>valor decimal</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>vasos_coloreados</strong></p></td>
+<td><p>Número de vasos principales coloreados por fluoroscopía</p></td>
+<td><p>0–3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="variables-categoricas">
+<h2>Variables Categóricas<a class="headerlink" href="#variables-categoricas" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Descripción</p></th>
+<th class="head"><p>Categorías</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>sexo</strong></p></td>
+<td><p>Sexo del paciente</p></td>
+<td><p>1 = hombre, 0 = mujer</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>dolor_pecho</strong></p></td>
+<td><p>Tipo de dolor en el pecho</p></td>
+<td><p>1 = angina típica, 2 = angina atípica, 3 = dolor no anginoso, 4 = asintomático</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>azucar_ayunas</strong></p></td>
+<td><p>Azúcar en ayunas &gt; 120 mg/dl</p></td>
+<td><p>1 = sí, 0 = no</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ecg_reposo</strong></p></td>
+<td><p>Resultados del electrocardiograma en reposo</p></td>
+<td><p>0 = normal, 1 = anomalía ST-T, 2 = hipertrofia ventricular izquierda</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>angina_ejercicio</strong></p></td>
+<td><p>Angina inducida por ejercicio</p></td>
+<td><p>1 = sí, 0 = no</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pendiente_st</strong></p></td>
+<td><p>Pendiente del segmento ST en el ECG de esfuerzo</p></td>
+<td><p>1 = ascendente, 2 = plana, 3 = descendente</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>talio</strong></p></td>
+<td><p>Resultado de la prueba de talio (<em>thalassemia</em>)</p></td>
+<td><p>3 = normal, 6 = defecto fijo, 7 = defecto reversible</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="variable-objetivo">
+<h2>Variable Objetivo<a class="headerlink" href="#variable-objetivo" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Descripción</p></th>
+<th class="head"><p>Categorías</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>enfermedad_cardiaca</strong></p></td>
+<td><p>Diagnóstico de enfermedad cardíaca</p></td>
+<td><p>0 = sano, 1–4 = distintos grados de enfermedad</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">null_counts</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">null_columns</span> <span class="o">=</span> <span class="n">null_counts</span><span class="p">[</span><span class="n">null_counts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">null_columns</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Columnas con valores nulos:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">null_columns</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No hay valores nulos en la DataBase.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Columnas con valores nulos:
+vasos_coloreados    4
+talio               2
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tratamiento-de-datos-faltantes">
+<h2>2.2 Tratamiento de datos faltantes<a class="headerlink" href="#tratamiento-de-datos-faltantes" title="Link to this heading">#</a></h2>
+<p>Tras analizar el dataset, se identificaron los siguientes valores faltantes:</p>
+<ul class="simple">
+<li><p><strong>vasos_coloreados</strong> → 4 valores faltantes</p></li>
+<li><p><strong>talio</strong> → 2 valores faltantes</p></li>
+<li><p>Todas las demás variables → 0 valores faltantes</p></li>
+</ul>
+<p>En total, el dataset contiene <strong>6 valores faltantes</strong> distribuidos únicamente en esas dos variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Índices con NaN en vasos_coloreados:&quot;</span><span class="p">,</span> <span class="n">all_data</span><span class="p">[</span><span class="n">all_data</span><span class="p">[</span><span class="s1">&#39;vasos_coloreados&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Índices con NaN en talio:&quot;</span><span class="p">,</span> <span class="n">all_data</span><span class="p">[</span><span class="n">all_data</span><span class="p">[</span><span class="s1">&#39;talio&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Índices con NaN en vasos_coloreados: [166, 192, 287, 302]
+Índices con NaN en talio: [87, 266]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="imputacion-de-datos-faltantes">
+<h2>Imputación de datos faltantes<a class="headerlink" href="#imputacion-de-datos-faltantes" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;vasos_coloreados&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;vasos_coloreados&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;vasos_coloreados&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;talio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;talio&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;talio&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_data</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>edad                   0
+sexo                   0
+dolor_pecho            0
+presion_reposo         0
+colesterol             0
+azucar_ayunas          0
+ecg_reposo             0
+freq_cardiaca_max      0
+angina_ejercicio       0
+depresion_st           0
+pendiente_st           0
+vasos_coloreados       0
+talio                  0
+enfermedad_cardiaca    0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para las variables con datos faltantes, los cuales eran muy pocos se utilizó imputación por moda, asignando el valor más común dentro de cada columna como sustituto de los valores ausentes.</p>
+<section id="cambio-de-valores-en-variable-objetivo">
+<h3>Cambio de valores en variable objetivo<a class="headerlink" href="#cambio-de-valores-en-variable-objetivo" title="Link to this heading">#</a></h3>
+<p>En el dataset original, enfermedad_cardiaca puede tomar valores:</p>
+<p>0 → paciente sano</p>
+<p>1–4 → distintos grados de enfermedad</p>
+<p>Para objetivo de este projecto cambiemos estas variables por 0 y 1 respectivamente,</p>
+<p>0 → <strong>No</strong> tiene enfermedad</p>
+<p>1 → <strong>Si</strong> tiene enfermedad</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convertir la variable objetivo a binaria</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># Verificar los valores únicos</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="n">all_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>enfermedad_cardiaca
+0    164
+1    139
+Name: count, dtype: int64
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>edad</th>
+      <th>sexo</th>
+      <th>dolor_pecho</th>
+      <th>presion_reposo</th>
+      <th>colesterol</th>
+      <th>azucar_ayunas</th>
+      <th>ecg_reposo</th>
+      <th>freq_cardiaca_max</th>
+      <th>angina_ejercicio</th>
+      <th>depresion_st</th>
+      <th>pendiente_st</th>
+      <th>vasos_coloreados</th>
+      <th>talio</th>
+      <th>enfermedad_cardiaca</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>1</td>
+      <td>1</td>
+      <td>145</td>
+      <td>233</td>
+      <td>1</td>
+      <td>2</td>
+      <td>150</td>
+      <td>0</td>
+      <td>2.3</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>67</td>
+      <td>1</td>
+      <td>4</td>
+      <td>160</td>
+      <td>286</td>
+      <td>0</td>
+      <td>2</td>
+      <td>108</td>
+      <td>1</td>
+      <td>1.5</td>
+      <td>2</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>67</td>
+      <td>1</td>
+      <td>4</td>
+      <td>120</td>
+      <td>229</td>
+      <td>0</td>
+      <td>2</td>
+      <td>129</td>
+      <td>1</td>
+      <td>2.6</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>37</td>
+      <td>1</td>
+      <td>3</td>
+      <td>130</td>
+      <td>250</td>
+      <td>0</td>
+      <td>0</td>
+      <td>187</td>
+      <td>0</td>
+      <td>3.5</td>
+      <td>3</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>41</td>
+      <td>0</td>
+      <td>2</td>
+      <td>130</td>
+      <td>204</td>
+      <td>0</td>
+      <td>2</td>
+      <td>172</td>
+      <td>0</td>
+      <td>1.4</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="eda">
+<h2>2.3 EDA<a class="headerlink" href="#eda" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1 Distribución de pacientes con/sin enfermedad cardíaca</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s1">&#39;enfermedad_cardiaca&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;enfermedad_cardiaca&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;pastel&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;Sin enfermedad&#39;</span><span class="p">,</span> <span class="s1">&#39;Con enfermedad&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de pacientes con/sin enfermedad cardíaca&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;HeartDisease (0 = Normal, 1 = Enfermedad)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Cantidad de pacientes&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">horizontalalignment</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/56423a0e212a1ee9ab24c3ab02ba0c0988e0dc0b6272defdf42ad3475871cd16.png" src="_images/56423a0e212a1ee9ab24c3ab02ba0c0988e0dc0b6272defdf42ad3475871cd16.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>enfermedad_cardiaca
+0    164
+1    139
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>De un total de 303 personas, 164 (54.1%) están sanas y 139 (45.8%) presentan enfermedad cardíaca.
+Esto refleja un ligero desbalance en las clases, aunque la diferencia no es significativa, por lo que podemos considerar que el conjunto de datos está razonablemente balanceado y resulta adecuado para el análisis predictivo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Distribución de la edad</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;edad&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;skyblue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de la Edad de los Pacientes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Edad&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Frecuencia&#39;)
+</pre></div>
+</div>
+<img alt="_images/b0e15a44bb36e5b39b8742fb9591c08667e8a2dc5be1cbc041a4c8e66326b22a.png" src="_images/b0e15a44bb36e5b39b8742fb9591c08667e8a2dc5be1cbc041a4c8e66326b22a.png" />
+</div>
+</div>
+<p>La edad de los pacientes varía entre un rango amplio (aprox. 28 a 77 años), con una media cercana a los 55 años. La mayor concentración de casos se encuentra en edades medias y avanzadas, lo que concuerda con la literatura médica sobre mayor riesgo cardiovascular en etapas adultas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Relación Sexo - Enfermedad cardíaca</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;sexo&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">all_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;pastel&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;M&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Relación entre Sexo y Enfermedad Cardíaca&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sexo (M = Masculino, F = Femenino)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Cantidad de pacientes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Enfermedad Cardiaca&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0 = Sano&quot;</span><span class="p">,</span> <span class="s2">&quot;1 = Enfermedad&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2559b579e1c12819a2c706fc3d650124e4291f9ec45f195ea56c786a4e11cf18.png" src="_images/2559b579e1c12819a2c706fc3d650124e4291f9ec45f195ea56c786a4e11cf18.png" />
+</div>
+</div>
+<p>La prevalencia de la enfermedad es mayor en hombres que en mujeres, y se observa una proporción relevante de casos positivos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. Tipos de dolor en el pecho (ChestPainType) vs HeartDisease</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;dolor_pecho&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">all_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;pastel&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;AT&#39;</span><span class="p">,</span><span class="s1">&#39;AAT&#39;</span><span class="p">,</span><span class="s1">&#39;DNA&#39;</span><span class="p">,</span><span class="s1">&#39;AS&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Tipos de dolor en el pecho y Enfermedad Cardíaca&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Dolor de pecho&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Cantidad de pacientes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Enfermedad cardiaca&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0 = Sano&quot;</span><span class="p">,</span> <span class="s2">&quot;1 = Enfermedad&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7e821a71d453d5766971d764ba57630c8003cf2791cf5f7d37c88c21202bb646.png" src="_images/7e821a71d453d5766971d764ba57630c8003cf2791cf5f7d37c88c21202bb646.png" />
+</div>
+</div>
+<p>Aunque médicamente se suele asociar la presencia de síntomas con un mayor riesgo, el análisis nos revela que el grupo de pacientes asintomáticos (ASY) es el que presenta la mayor cantidad de diagnósticos positivos de enfermedad cardíaca, lo que subraya la importancia crucial de las evaluaciones preventivas incluso en ausencia de dolor en el pecho. Por el contrario, los grupos con angina atípica (ATA) y dolor no anginoso (NAP) predominan en pacientes sanos, mientras que la angina típica (TA) tiene una frecuencia general baja, lo que desafía las expectativas tradicionales y enfatiza que la falta de síntomas no descarta la presencia de la enfermedad.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5. Presión arterial en reposo (RestingBP) y Colesterol</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;presion_reposo&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightcoral&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distribución de Presión Arterial en Reposo (RestingBP)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;mm Hg&quot;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;colesterol&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gold&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distribución de Colesterol Sérico (Colesterol)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;mg/dl&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/89bb333d5688754eb02568e7beb09f978a80c75b0edf0eb853c2f9a410e0cfca.png" src="_images/89bb333d5688754eb02568e7beb09f978a80c75b0edf0eb853c2f9a410e0cfca.png" />
+</div>
+</div>
+<p>La distribución de presión arterial en reposo (RestingBP) se concentra entre 120–140 mmHg, con forma aproximadamente normal y ligera asimetría a la derecha.</p>
+<p>La distribución de colesterol sérico muestra asimetría positiva: la mayor densidad está alrededor de 200–250 mg/dL y se observan valores atípicos altos (≥400–500 mg/dL).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 6) Distribución del nivel de colesterol</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;enfermedad_cardiaca&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;colesterol&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;pastel&quot;</span><span class="p">,</span> <span class="n">fliersize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">orient</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;enfermedad_cardiaca&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;colesterol&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;pastel&quot;</span><span class="p">,</span> <span class="n">orient</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;Sano&#39;</span><span class="p">,</span> <span class="s1">&#39;Enfermo&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución del nivel de colesterol agrupado por pacientes enfermos y sanos&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Estado del paciente&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c134d14cdb127a87eebec8da79ea3f13169101af3032e16950235b6360d4d631.png" src="_images/c134d14cdb127a87eebec8da79ea3f13169101af3032e16950235b6360d4d631.png" />
+</div>
+</div>
+<p>Podemos observar que la dispersión de ambas clases con respecto al nivel de colesterol es similar , presnetando en ambos casos valores atipicos.</p>
+<p>Es interesante ver que ese paciente que tiene nivel de colesterol muy elevado (mayor a 500) hace parte del grupo de los sanos.</p>
+<p>Todo esto indicaria que la variable de colesterol sola no separa bien las clases, por lo que se podria asumir que el efecto no es enorme.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 6. Glucosa en ayunas (FastingBS) vs HeartDisease</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;azucar_ayunas&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">all_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Glucosa en Ayunas y Enfermedad Cardíaca&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;FastingBS (0 = &lt;=120, 1 = &gt;120)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Cantidad de pacientes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;HeartDisease&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0 = Normal&quot;</span><span class="p">,</span> <span class="s2">&quot;1 = Enfermedad&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/da8959f9d0272e9fddb3f2191bbdbc75d94c4468abfa76fec7f66b435ee77509.png" src="_images/da8959f9d0272e9fddb3f2191bbdbc75d94c4468abfa76fec7f66b435ee77509.png" />
+</div>
+</div>
+<p>La mayoría de los pacientes presenta niveles de glucosa en ayunas dentro del rango normal (≤120 mg/dl), mostrando una distribución relativamente equilibrada entre quienes padecen y no padecen enfermedad cardíaca, aunque con un ligero predominio de casos normales. Sin embargo, en el grupo con glucosa elevada (&gt;120 mg/dl) se observa una clara y desproporcionada mayor prevalencia de diagnósticos cardíacos, lo que confirma la hiperglucemia como un significativo factor de riesgo metabólico directamente asociado a la enfermedad cardiovascular.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 7. Frecuencia cardíaca máxima (MaxHR)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;freq_cardiaca_max&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgreen&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de la Frecuencia Cardíaca Máxima (freq_cardiaca_max)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia cardíaca máxima alcanzada&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/240420d937f4ad71bfb20c8acba34a60a7d217e86e0103925343b2b23c517f9f.png" src="_images/240420d937f4ad71bfb20c8acba34a60a7d217e86e0103925343b2b23c517f9f.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="modelacion">
+<h1>3. MODELACIÓN<a class="headerlink" href="#modelacion" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Features</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span>               <span class="c1"># Target</span>
+
+<span class="c1"># Dividir 70% - 30%</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tamaño entrenamiento:&quot;</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tamaño prueba:&quot;</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tamaño entrenamiento: 212
+Tamaño prueba: 91
+</pre></div>
+</div>
+</div>
+</div>
+<p>Dividimos nuestro dataset en 70% training y 30% test,
+quedando un tamaño para entrenamiento de 212 y de prueba de 91.</p>
+<section id="matriz-de-correlacion">
+<h2>Matriz de Correlación<a class="headerlink" href="#matriz-de-correlacion" title="Link to this heading">#</a></h2>
+<p>Esta primera matriz nos ayuda a ver las relaciones en los datos originales. Es útil, pero las variables categóricas (como dolor_pecho) son tratadas como números, lo que podría no reflejar su verdadera naturaleza.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creamos una copia para no modificar el X_train original</span>
+<span class="n">df_train_temp</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_train_temp</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Calculamos la matriz de correlación</span>
+<span class="n">corr_before</span> <span class="o">=</span> <span class="n">df_train_temp</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Graficamos el heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr_before</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Matriz de Correlación (Datos de Entrenamiento Originales)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f21c931ad0af23eb2e58292ead5112dfc12f75617fef95cdbe805fc67cc15e2b.png" src="_images/f21c931ad0af23eb2e58292ead5112dfc12f75617fef95cdbe805fc67cc15e2b.png" />
+</div>
+</div>
+</section>
+<section id="pipeline-de-preprocesamiento">
+<h2>Pipeline de Preprocesamiento<a class="headerlink" href="#pipeline-de-preprocesamiento" title="Link to this heading">#</a></h2>
+<p>Ahora, definimos cómo se transformarán nuestras variables. Las categóricas se convertirán usando One-Hot Encoding y las numéricas se mantendrán como están.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Columnas categóricas y numéricas</span>
+<span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sexo&quot;</span><span class="p">,</span> <span class="s2">&quot;dolor_pecho&quot;</span><span class="p">,</span> <span class="s2">&quot;azucar_ayunas&quot;</span><span class="p">,</span> <span class="s2">&quot;ecg_reposo&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;angina_ejercicio&quot;</span><span class="p">,</span> <span class="s2">&quot;pendiente_st&quot;</span><span class="p">,</span> <span class="s2">&quot;talio&quot;</span><span class="p">]</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cat_cols</span><span class="p">]</span>
+
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">cat_cols</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esta matriz es más relevante para nuestro modelo, ya que utiliza los datos tal como los verá el clasificador después de la codificación One-Hot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_processed</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="n">ohe_feature_names</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">named_transformers_</span><span class="p">[</span><span class="s1">&#39;cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span>
+<span class="n">final_feature_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ohe_feature_names</span><span class="p">)</span> <span class="o">+</span> <span class="n">num_cols</span>
+
+<span class="c1"># Creamos un DataFrame con los datos transformados y los nombres correctos</span>
+<span class="n">X_train_enc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_train_processed</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">final_feature_names</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">df_train_ml</span> <span class="o">=</span> <span class="n">X_train_enc_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_train_ml</span><span class="p">[</span><span class="s2">&quot;enfermedad_cardiaca&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">corr_after</span> <span class="o">=</span> <span class="n">df_train_ml</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr_after</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Matriz de Correlación (TRAIN, después de One-Hot Encoding)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f6e01aee8b2ab5f7acd1020a7b5cf92b170d65de8d51989c9bd67b65bff106d9.png" src="_images/f6e01aee8b2ab5f7acd1020a7b5cf92b170d65de8d51989c9bd67b65bff106d9.png" />
+</div>
+</div>
+<p>Variables más relacionadas con enfermedad_cardiaca (TRAIN, tras One-Hot)</p>
+<p>Las variables con mayor correlación positiva con la presencia de enfermedad cardíaca son dolor_pecho_4 (asintomático) (0.54), talio_7.0 (defecto reversible) (0.52), vasos_coloreados (0.46), depresion_st (0.46) y angina_ejercicio_1 (0.43). También se observan asociaciones moderadas con pendiente_st_2 (plana) (0.35), pendiente_st_3 (descendente) (0.34), dolor_pecho_3 (no anginoso) (0.33) y dolor_pecho_2 (angina atípica) (0.25).</p>
+<p>En cuanto a las correlaciones negativas más relevantes, destacan la frecuencia cardíaca máxima (−0.42) y el hecho de ser hombre (sexo_1) (−0.33).</p>
+</section>
+<section id="pipeline-del-entrenamiento-del-el-modelo">
+<h2>Pipeline del entrenamiento del el Modelo<a class="headerlink" href="#pipeline-del-entrenamiento-del-el-modelo" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># El pipeline aplicará el preprocesamiento y luego entrenará el modelo</span>
+<span class="n">clf_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;classifier&quot;</span><span class="p">,</span> <span class="n">GaussianNB</span><span class="p">())</span>
+<span class="p">])</span>
+
+<span class="c1"># Usamos cross_val_score para evaluar la robustez del pipeline</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf_pipeline</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scores de AUC en validación cruzada: </span><span class="si">{</span><span class="n">cv_scores</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AUC promedio en validación cruzada: </span><span class="si">{</span><span class="n">cv_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Entrenamos el pipeline completo con todos los datos de entrenamiento</span>
+<span class="n">clf_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Hacemos predicciones en el conjunto de prueba</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf_pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy en el conjunto de prueba: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Reporte de Clasificación en el Conjunto de Prueba ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Scores de AUC en validación cruzada: [0.89782609 0.88695652 0.79633867 0.92677346 0.88100686]
+AUC promedio en validación cruzada: 0.8778
+
+Accuracy en el conjunto de prueba: 0.7253
+
+=== Reporte de Clasificación en el Conjunto de Prueba ===
+              precision    recall  f1-score   support
+
+           0       0.88      0.57      0.69        49
+           1       0.64      0.90      0.75        42
+
+    accuracy                           0.73        91
+   macro avg       0.76      0.74      0.72        91
+weighted avg       0.77      0.73      0.72        91
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\OMAR DANIEL MEDINA V\anaconda3\envs\ml_venv\Lib\site-packages\sklearn\preprocessing\_encoders.py:227: UserWarning: Found unknown categories in columns [3] during transform. These unknown categories will be encoded as all zeros
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluacion-del-modelo-en-el-conjunto-de-prueba">
+<h2>Evaluación del Modelo en el Conjunto de Prueba<a class="headerlink" href="#evaluacion-del-modelo-en-el-conjunto-de-prueba" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Predicciones en el Conjunto de Prueba </span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf_pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_proba</span> <span class="o">=</span> <span class="n">clf_pipeline</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Matriz de Confusión</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+            <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Predicción Sano (0)&quot;</span><span class="p">,</span> <span class="s2">&quot;Predicción Enfermo (1)&quot;</span><span class="p">],</span>
+            <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Real Sano (0)&quot;</span><span class="p">,</span> <span class="s2">&quot;Real Enfermo (1)&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Matriz de Confusión&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Clase Predicha&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Clase Real&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ff95f3dd764f35fe510a1b48235ba0b9753d2d08cadc1c2c02aa9c226340cbdd.png" src="_images/ff95f3dd764f35fe510a1b48235ba0b9753d2d08cadc1c2c02aa9c226340cbdd.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Curva ROC</span>
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)</span>
+<span class="n">roc_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Curva ROC (AUC = </span><span class="si">{</span><span class="n">roc_auc</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Tasa de Falsos Positivos&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Tasa de Verdaderos Positivos (Sensibilidad)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Curva ROC (Receiver Operating Characteristic)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b5e59a0560059582bb400e807c9b135061dd00245a1d92a2550afbbe2a3d8c99.png" src="_images/b5e59a0560059582bb400e807c9b135061dd00245a1d92a2550afbbe2a3d8c99.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafico de Distribución de Probabilidades</span>
+<span class="n">y_true_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">y_proba</span><span class="p">[</span><span class="n">y_true_np</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Clase Real: Sano (0)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">y_proba</span><span class="p">[</span><span class="n">y_true_np</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Clase Real: Enfermo (1)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de la Probabilidad Predicha de ser &#39;Enfermo&#39;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;P(enfermedad_cardiaca = 1)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Densidad&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f77d5f6e2bbf57e1053b27e7118b2c4d8643ea089dc9a4070e36c56213e930a7.png" src="_images/f77d5f6e2bbf57e1053b27e7118b2c4d8643ea089dc9a4070e36c56213e930a7.png" />
+</div>
+</div>
+<section id="conclusiones-gaussiannb">
+<h3>Conclusiones GaussianNB<a class="headerlink" href="#conclusiones-gaussiannb" title="Link to this heading">#</a></h3>
+<p>Podemos decir que el modelo muestra alta sensibilidad (90.5%), logrando identificar a la gran mayoría de pacientes enfermos (38 de 42). Sin embargo, clasifica erróneamente como enfermos a varios pacientes sanos (21 de 49) (57%). Podemos decir que se comporta como un medico “cauteloso”  que prefiere equivocarse diciendo que alguien sano podría estar enfermo, en lugar de que equivocarse diciendo que alguien enfermo está sano.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extraemos los componentes del pipeline entrenado</span>
+<span class="n">trained_pipeline</span> <span class="o">=</span> <span class="n">clf_pipeline</span> 
+<span class="n">nb_classifier</span> <span class="o">=</span> <span class="n">trained_pipeline</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;classifier&#39;</span><span class="p">]</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">trained_pipeline</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;preprocessor&#39;</span><span class="p">]</span>
+
+<span class="c1"># Esta es una forma más directa y robusta de obtener los nombres</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+
+<span class="c1"># Creamos DataFrames con las medias y varianzas aprendidas por el modelo</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">nb_classifier</span><span class="o">.</span><span class="n">theta_</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span> 
+                     <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;No Enfermedad&quot;</span><span class="p">,</span> <span class="s2">&quot;Enfermedad&quot;</span><span class="p">])</span>
+
+<span class="n">variances</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">nb_classifier</span><span class="o">.</span><span class="n">var_</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span> 
+                         <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;No Enfermedad&quot;</span><span class="p">,</span> <span class="s2">&quot;Enfermedad&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Medias Estimadas por Clase y Característica ===&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Varianzas Estimadas por Clase y Característica ===&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">variances</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Medias Estimadas por Clase y Característica ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>No Enfermedad</th>
+      <th>Enfermedad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>cat__sexo_1</th>
+      <td>0.548</td>
+      <td>0.856</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_2</th>
+      <td>0.287</td>
+      <td>0.062</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_3</th>
+      <td>0.391</td>
+      <td>0.113</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_4</th>
+      <td>0.243</td>
+      <td>0.784</td>
+    </tr>
+    <tr>
+      <th>cat__azucar_ayunas_1</th>
+      <td>0.130</td>
+      <td>0.113</td>
+    </tr>
+    <tr>
+      <th>cat__ecg_reposo_1</th>
+      <td>0.009</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>cat__ecg_reposo_2</th>
+      <td>0.426</td>
+      <td>0.598</td>
+    </tr>
+    <tr>
+      <th>cat__angina_ejercicio_1</th>
+      <td>0.139</td>
+      <td>0.536</td>
+    </tr>
+    <tr>
+      <th>cat__pendiente_st_2</th>
+      <td>0.313</td>
+      <td>0.639</td>
+    </tr>
+    <tr>
+      <th>cat__pendiente_st_3</th>
+      <td>0.052</td>
+      <td>0.072</td>
+    </tr>
+    <tr>
+      <th>cat__talio_6.0</th>
+      <td>0.035</td>
+      <td>0.072</td>
+    </tr>
+    <tr>
+      <th>cat__talio_7.0</th>
+      <td>0.148</td>
+      <td>0.649</td>
+    </tr>
+    <tr>
+      <th>remainder__edad</th>
+      <td>52.626</td>
+      <td>56.969</td>
+    </tr>
+    <tr>
+      <th>remainder__presion_reposo</th>
+      <td>128.322</td>
+      <td>132.041</td>
+    </tr>
+    <tr>
+      <th>remainder__colesterol</th>
+      <td>246.374</td>
+      <td>253.649</td>
+    </tr>
+    <tr>
+      <th>remainder__freq_cardiaca_max</th>
+      <td>158.287</td>
+      <td>139.505</td>
+    </tr>
+    <tr>
+      <th>remainder__depresion_st</th>
+      <td>0.593</td>
+      <td>1.476</td>
+    </tr>
+    <tr>
+      <th>remainder__vasos_coloreados</th>
+      <td>0.252</td>
+      <td>1.082</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Varianzas Estimadas por Clase y Característica ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>No Enfermedad</th>
+      <th>Enfermedad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>cat__sexo_1</th>
+      <td>0.248</td>
+      <td>0.124</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_2</th>
+      <td>0.205</td>
+      <td>0.058</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_3</th>
+      <td>0.238</td>
+      <td>0.101</td>
+    </tr>
+    <tr>
+      <th>cat__dolor_pecho_4</th>
+      <td>0.184</td>
+      <td>0.170</td>
+    </tr>
+    <tr>
+      <th>cat__azucar_ayunas_1</th>
+      <td>0.113</td>
+      <td>0.101</td>
+    </tr>
+    <tr>
+      <th>cat__ecg_reposo_1</th>
+      <td>0.009</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>cat__ecg_reposo_2</th>
+      <td>0.245</td>
+      <td>0.240</td>
+    </tr>
+    <tr>
+      <th>cat__angina_ejercicio_1</th>
+      <td>0.120</td>
+      <td>0.249</td>
+    </tr>
+    <tr>
+      <th>cat__pendiente_st_2</th>
+      <td>0.215</td>
+      <td>0.231</td>
+    </tr>
+    <tr>
+      <th>cat__pendiente_st_3</th>
+      <td>0.049</td>
+      <td>0.067</td>
+    </tr>
+    <tr>
+      <th>cat__talio_6.0</th>
+      <td>0.034</td>
+      <td>0.067</td>
+    </tr>
+    <tr>
+      <th>cat__talio_7.0</th>
+      <td>0.126</td>
+      <td>0.228</td>
+    </tr>
+    <tr>
+      <th>remainder__edad</th>
+      <td>86.773</td>
+      <td>61.020</td>
+    </tr>
+    <tr>
+      <th>remainder__presion_reposo</th>
+      <td>236.010</td>
+      <td>306.431</td>
+    </tr>
+    <tr>
+      <th>remainder__colesterol</th>
+      <td>3451.051</td>
+      <td>2442.929</td>
+    </tr>
+    <tr>
+      <th>remainder__freq_cardiaca_max</th>
+      <td>327.822</td>
+      <td>475.817</td>
+    </tr>
+    <tr>
+      <th>remainder__depresion_st</th>
+      <td>0.583</td>
+      <td>1.611</td>
+    </tr>
+    <tr>
+      <th>remainder__vasos_coloreados</th>
+      <td>0.328</td>
+      <td>1.004</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculamos la diferencia normalizada por la varianza combinada</span>
+<span class="n">impacto_normalizado</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Enfermedad&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;No Enfermedad&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> 
+                       <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variances</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Enfermedad&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">variances</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;No Enfermedad&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="p">)</span> <span class="c1"># 1e-9 para evitar división por cero</span>
+<span class="n">impacto_normalizado</span> <span class="o">=</span> <span class="n">impacto_normalizado</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Graficamos el impacto normalizado</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">impacto_normalizado</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;barh&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;coral&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Impacto Normalizado de Variables&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Impacto Normalizado &quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Característica&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c9efcb3731064ed23c0dedb369f8efedde381440f67ef54430b51ee7cf4b7204.png" src="_images/c9efcb3731064ed23c0dedb369f8efedde381440f67ef54430b51ee7cf4b7204.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="comparacion-con-otros-modelos">
+<h2>Comparación con otros modelos<a class="headerlink" href="#comparacion-con-otros-modelos" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Definimos los modelos a comparar </span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;GaussianNB&quot;</span><span class="p">:</span> <span class="n">GaussianNB</span><span class="p">(),</span>
+    <span class="s2">&quot;LogisticRegression&quot;</span><span class="p">:</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="s2">&quot;KNN&quot;</span><span class="p">:</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="s2">&quot;RandomForest&quot;</span><span class="p">:</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span> <span class="c1"># n_estimators es el número de árboles</span>
+<span class="p">}</span>
+
+<span class="c1"># Entrenamos cada modelo y guardamos sus métricas ---</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">clf</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># Creamos un Pipeline para cada modelo</span>
+    <span class="n">model_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;classifier&quot;</span><span class="p">,</span> <span class="n">clf</span><span class="p">)</span>
+    <span class="p">])</span>
+    
+    <span class="c1"># Entrenamos el pipeline</span>
+    <span class="n">model_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    
+    <span class="c1"># Predecimos en el conjunto de prueba</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model_pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">y_proba</span> <span class="o">=</span> <span class="n">model_pipeline</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Guardamos las métricas</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Accuracy&quot;</span><span class="p">:</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Precision (Clase 1)&quot;</span><span class="p">:</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">][</span><span class="s2">&quot;precision&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Recall (Clase 1)&quot;</span><span class="p">:</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">][</span><span class="s2">&quot;recall&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;F1-Score (Clase 1)&quot;</span><span class="p">:</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">][</span><span class="s2">&quot;f1-score&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;AUC&quot;</span><span class="p">:</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="c1"># Mostramos los resultados en un DataFrame ---</span>
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Tabla Comparativa de Modelos ===&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">results_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Tabla Comparativa de Modelos ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Accuracy</th>
+      <th>Precision (Clase 1)</th>
+      <th>Recall (Clase 1)</th>
+      <th>F1-Score (Clase 1)</th>
+      <th>AUC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>GaussianNB</th>
+      <td>0.7253</td>
+      <td>0.6441</td>
+      <td>0.9048</td>
+      <td>0.7525</td>
+      <td>0.8484</td>
+    </tr>
+    <tr>
+      <th>LogisticRegression</th>
+      <td>0.8462</td>
+      <td>0.8500</td>
+      <td>0.8095</td>
+      <td>0.8293</td>
+      <td>0.9305</td>
+    </tr>
+    <tr>
+      <th>KNN</th>
+      <td>0.7033</td>
+      <td>0.7143</td>
+      <td>0.5952</td>
+      <td>0.6494</td>
+      <td>0.7597</td>
+    </tr>
+    <tr>
+      <th>RandomForest</th>
+      <td>0.8352</td>
+      <td>0.8140</td>
+      <td>0.8333</td>
+      <td>0.8235</td>
+      <td>0.9140</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Graficamos las curvas ROC de todos los modelos ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># Entrenamos de nuevo brevemente para obtener las probabilidades para la gráfica</span>
+    <span class="n">model_pipeline</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">classifier</span><span class="o">=</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">y_proba</span> <span class="o">=</span> <span class="n">model_pipeline</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)</span>
+    <span class="n">auc_score</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> (AUC = </span><span class="si">{</span><span class="n">auc_score</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Clasificador Aleatorio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Tasa de Falsos Positivos (1 - Especificidad)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Tasa de Verdaderos Positivos (Sensibilidad)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Curvas ROC Comparativas en el Conjunto de Prueba&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1432cfbc7a2056df6ba6d7d9bfe3bc7c3df0c1103f21524a3e3834f35eac969a.png" src="_images/1432cfbc7a2056df6ba6d7d9bfe3bc7c3df0c1103f21524a3e3834f35eac969a.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="reflexion-y-conclusiones-finales">
+<h1>4. Reflexión y Conclusiones Finales<a class="headerlink" href="#reflexion-y-conclusiones-finales" title="Link to this heading">#</a></h1>
+<p>El proyecto evaluó el uso de Naive Bayes para predecir enfermedades cardíacas y lo comparó con modelos más complejos como Regresión Logística y Random Forest. Aunque estos últimos alcanzaron mejor rendimiento global (AUC &gt; 0.91 frente a 0.85 de Naive Bayes), el modelo bayesiano destacó por su alta sensibilidad (RECALL 90.5%), lo que lo convierte en una herramienta muy eficaz para la detección temprana.</p>
+<p>En términos clínicos, Naive Bayes minimiza los falsos negativos, priorizando no pasar por alto a pacientes enfermos, aun a costa de más falsos positivos. Esto lo hace ideal como modelo de cribado o screening inicial, donde se busca identificar a la mayoría de los pacientes en riesgo antes de pruebas más específicas.</p>
+<p>Además, aporta interpretabilidad, manejo explícito de la incertidumbre y un buen desempeño con datos limitados. Su principal limitación es la asunción de independencia entre variables, lo que explica por qué modelos más complejos logran métricas globales superiores.</p>
+<p>En conclusión, mientras que la Regresión Logística es la mejor opción si se busca precisión general, Naive Bayes resulta sumamente valioso cuando la prioridad es no dejar sin detectar a pacientes enfermos.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Proyecto: Clasificación con Naive Bayes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-librerias">1. Importación de librerías</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-del-minipriyecto-y-analisis-exploratorio">2. Contexto del Minipriyecto y Análisis Exploratorio</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">2.1 Diccionario de variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables Numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tratamiento-de-datos-faltantes">2.2 Tratamiento de datos faltantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputacion-de-datos-faltantes">Imputación de datos faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-valores-en-variable-objetivo">Cambio de valores en variable objetivo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda">2.3 EDA</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelacion">3. MODELACIÓN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-correlacion">Matriz de Correlación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento">Pipeline de Preprocesamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-del-entrenamiento-del-el-modelo">Pipeline del entrenamiento del el Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-del-modelo-en-el-conjunto-de-prueba">Evaluación del Modelo en el Conjunto de Prueba</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-gaussiannb">Conclusiones GaussianNB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-otros-modelos">Comparación con otros modelos</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reflexion-y-conclusiones-finales">4. Reflexión y Conclusiones Finales</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Omar Medina y Andres España
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
